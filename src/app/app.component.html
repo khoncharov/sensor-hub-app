@@ -1,3 +1,19 @@
-<p>Hello</p>
-
-<router-outlet></router-outlet>
+<fieldset class="device_container">
+  <legend>DEVICE</legend>
+  <ul>
+    <li>SOME DEV!ce [connected]</li>
+    <li>SOME other DEV</li>
+  </ul>
+  <button type="button">ADD</button>
+</fieldset>
+<fieldset>
+  <legend>FILE</legend>
+  <button type="button" (click)="getOpenedFile()">OPEN</button>
+  <button type="button" (click)="saveDataToFile()">SAVE</button>
+</fieldset>
+<fieldset>
+  <legend>DATA</legend>
+  <p>1234</p>
+  <button type="button">RECORD</button>
+  <p>STATE</p>
+</fieldset>
