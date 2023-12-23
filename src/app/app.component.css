@@ -2,3 +2,8 @@
   display: flex;
   justify-content: space-between;
 }
+
+.data_container {
+  color: #faf7e5;
+  text-shadow: 1px 1px 2px black;
+}
