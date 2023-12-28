@@ -1,19 +1,52 @@
+<fieldset>
+  <legend>File</legend>
+  <button type="button" (click)="getOpenedFile()" disabled>OPEN</button>
+  <button type="button" (click)="saveDataToFile()">SAVE</button>
+</fieldset>
 <fieldset class="device_container">
-  <legend>DEVICE</legend>
+  <legend>Device</legend>
   <ul>
     <li>SOME DEV!ce [connected]</li>
     <li>SOME other DEV</li>
   </ul>
   <button type="button">ADD</button>
 </fieldset>
-<fieldset>
-  <legend>FILE</legend>
-  <button type="button" (click)="getOpenedFile()">OPEN</button>
-  <button type="button" (click)="saveDataToFile()">SAVE</button>
+<fieldset class="data_container">
+  <legend>Data</legend>
+  <ul>
+    <li>
+      <label>
+        <input type="checkbox" />
+        sensor1:
+        <span>2900</span>
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="checkbox" />
+        sensor1:
+        <span>2900</span>
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="checkbox" />
+        sensor1:
+        <span>2900</span>
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="checkbox" />
+        sensor1:
+        <span>2900</span>
+      </label>
+    </li>
+  </ul>
+  <button type="button"><span>🟢</span>RECORD</button>
+  <button type="button"><span>🟥</span>STOP</button>
+  <span>10 s - 234 points</span>
 </fieldset>
-<fieldset>
-  <legend>DATA</legend>
-  <p>1234</p>
-  <button type="button">RECORD</button>
-  <p>STATE</p>
+<fieldset class="chart_container">
+  <legend>Chart</legend>
 </fieldset>

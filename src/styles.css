@@ -20,8 +20,12 @@ fieldset {
 
 legend {
   font-weight: bold;
-  color: mintcream;
+  color: #e2e2e2;
   background-color: #3f4251;
+}
+
+.data_container ul {
+  list-style-type: none;
 }
 
 button {
@@ -32,19 +36,25 @@ button {
   border-radius: 6px;
   font: inherit;
   font-weight: bold;
-  color: blueviolet;
+  color: rgb(18, 18, 22);
   cursor: pointer;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+  background-color: #a1b4ffca;
+  box-shadow: 0px 0px 4px -1px rgba(0, 0, 0, 0.4);
   transition: 0.2s;
 }
 
 button:hover {
-  color: black;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.856);
-  background-color: #ecd5ec;
+  color: rgb(83, 84, 102);
+  background-color: rgb(231, 231, 231);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.8);
 }
 
 button:active {
   color: black;
-  background-color: #8a9bdcca;
+  background-color: #dde3ffca;
+}
+
+button:disabled {
+  color: rgb(153, 153, 153);
+  background-color: #dde3ffca;
 }
