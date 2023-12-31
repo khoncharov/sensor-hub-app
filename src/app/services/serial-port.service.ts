@@ -31,50 +31,60 @@ const usbVendorId = 0x1a86;
 @Injectable({
   providedIn: 'root',
 })
-export class SerialAPIService {
+export class SerialPortService {
   private serial = navigator.serial;
 
   constructor() {
     this.serial.addEventListener('connect', this.connectHandler);
 
     this.serial.addEventListener('disconnect', this.disconnectHandler);
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const ports = await this.getPorts();
+      console.log(ports);
+    });
   }
 
   requestPort(): void {
-    // TODO: readable stream isLocked check
     this.serial
       .requestPort({ filters: [{ usbVendorId }] })
-      .then(async (port) => {
-        await port.open({ baudRate: 115200 });
-        console.log('port >', port);
-        while (port.readable) {
-          const reader = port.readable.getReader();
-          try {
-            while (true) {
-              const { value, done } = await reader.read();
-              if (done) {
-                console.log('The stream is done.');
-                break;
-              }
-              value.forEach((byte: number) => {
-                frameBuffer.push(byte);
-              });
-            }
-          } catch (error) {
-            console.log(error);
-          } finally {
-            reader.releaseLock();
-          }
-        }
+      .then((port) => {
+        console.log(port);
       })
       .catch((e) => {
         console.error(e);
+        // Err: No port selected
       });
+    // TODO: readable stream isLocked check
   }
 
   async getPorts(): Promise<Array<SerialPort>> {
     const ports = await this.serial.getPorts();
     return ports;
+  }
+
+  async openPort(port: SerialPort): Promise<void> {
+    await port.open({ baudRate: 115200 });
+    console.log('port >', port);
+    while (port.readable) {
+      const reader = port.readable.getReader();
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            console.log('The stream is done.');
+            break;
+          }
+          value.forEach((byte: number) => {
+            frameBuffer.push(byte);
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        reader.releaseLock();
+      }
+    }
   }
 
   connectHandler(e: Event): void {
