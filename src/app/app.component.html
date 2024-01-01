@@ -1,52 +1,65 @@
-<fieldset>
-  <legend>File</legend>
-  <button type="button" (click)="getOpenedFile()" disabled>OPEN</button>
-  <button type="button" (click)="saveDataToFile()">SAVE</button>
-</fieldset>
 <fieldset class="device_container">
-  <legend>Device</legend>
+  <legend>Port</legend>
   <ul>
-    <li>SOME DEV!ce [connected]</li>
-    <li>SOME other DEV</li>
+    <li *ngIf="port$ | async as port">
+      <span>
+        USB Device PID:0x{{ port.getInfo().usbProductId?.toString(16) }}
+      </span>
+      <span> VID:0x{{ port.getInfo().usbVendorId?.toString(16) }}</span>
+    </li>
   </ul>
-  <button type="button">ADD</button>
+  <button *ngIf="!(port$ | async)" type="button" (click)="addDevice()">
+    ADD DEVICE
+  </button>
+  <ng-container *ngIf="port$ | async as port">
+    <button
+      *ngIf="!(portIsConnected$ | async)"
+      type="button"
+      (click)="connectPort(port)"
+    >
+      CONNECT
+    </button>
+  </ng-container>
 </fieldset>
+
 <fieldset class="data_container">
   <legend>Data</legend>
   <ul>
     <li>
       <label>
         <input type="checkbox" />
-        sensor1:
+        sensor 1:
         <span>2900</span>
       </label>
     </li>
     <li>
       <label>
         <input type="checkbox" />
-        sensor1:
+        sensor 2:
         <span>2900</span>
       </label>
     </li>
     <li>
       <label>
         <input type="checkbox" />
-        sensor1:
+        sensor 3:
         <span>2900</span>
       </label>
     </li>
     <li>
       <label>
         <input type="checkbox" />
-        sensor1:
+        sensor 4:
         <span>2900</span>
       </label>
     </li>
   </ul>
   <button type="button"><span>🟢</span>RECORD</button>
   <button type="button"><span>🟥</span>STOP</button>
-  <span>10 s - 234 points</span>
+  <button type="button" (click)="saveDataToFile()">SAVE</button>
+  Recording: 10 s - 234 points
 </fieldset>
+
 <fieldset class="chart_container">
   <legend>Chart</legend>
 </fieldset>

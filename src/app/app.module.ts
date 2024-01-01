@@ -7,19 +7,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { serialPortReducer } from './store/reducers/serial-port.reducers';
 
+const reducers = { serialPort: serialPortReducer };
+
+const devtoolsOptions = {
+  maxAge: 25,
+  logOnly: !isDevMode(),
+  autoPause: true,
+  trace: false,
+  traceLimit: 75,
+};
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ serialPort: serialPortReducer }),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: !isDevMode(),
-      autoPause: true,
-      trace: false,
-      traceLimit: 75,
-    }),
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument(devtoolsOptions),
   ],
   providers: [],
   bootstrap: [AppComponent],

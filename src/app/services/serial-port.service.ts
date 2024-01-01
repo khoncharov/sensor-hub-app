@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+
 import FrameBuffer from '../utils/frame-buffer';
+import * as serialPortActions from '../store/actions/serial-port.actions';
 
 const controller = {
   enqueue: (data: Uint8Array) => {
@@ -25,47 +28,61 @@ const controller = {
 
 const frameBuffer = new FrameBuffer(controller);
 
+const baudRate = 115200;
 const usbVendorId = 0x1a86;
-// const usbProductId = 0x7523;
+const usbProductId = 0x7523;
 
 @Injectable({
   providedIn: 'root',
 })
 export class SerialPortService {
+  private readonly store = inject(Store);
+
   private serial = navigator.serial;
 
   constructor() {
-    this.serial.addEventListener('connect', this.connectHandler);
+    this.serial.addEventListener('connect', (e: Event) => {
+      const port = e.target as SerialPort;
+      this.store.dispatch(serialPortActions.add({ port }));
+    });
 
-    this.serial.addEventListener('disconnect', this.disconnectHandler);
+    this.serial.addEventListener('disconnect', () => {
+      this.store.dispatch(serialPortActions.remove());
+    });
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const ports = await this.getPorts();
-      console.log(ports);
+      const port = await this.getPort();
+      this.store.dispatch(serialPortActions.add({ port }));
     });
   }
 
   requestPort(): void {
     this.serial
-      .requestPort({ filters: [{ usbVendorId }] })
+      .requestPort({ filters: [{ usbVendorId, usbProductId }] })
       .then((port) => {
-        console.log(port);
+        this.store.dispatch(serialPortActions.add({ port }));
       })
       .catch((e) => {
         console.error(e);
-        // Err: No port selected
       });
-    // TODO: readable stream isLocked check
   }
 
-  async getPorts(): Promise<Array<SerialPort>> {
+  async getPort(): Promise<SerialPort | null> {
     const ports = await this.serial.getPorts();
-    return ports;
+    if (ports.length) {
+      return ports[0];
+    }
+    return null;
   }
 
   async openPort(port: SerialPort): Promise<void> {
-    await port.open({ baudRate: 115200 });
-    console.log('port >', port);
+    try {
+      await port.open({ baudRate });
+      this.store.dispatch(serialPortActions.connect());
+    } catch (error) {
+      console.error(error);
+    }
+
     while (port.readable) {
       const reader = port.readable.getReader();
       try {
@@ -80,25 +97,10 @@ export class SerialPortService {
           });
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         reader.releaseLock();
       }
     }
-  }
-
-  connectHandler(e: Event): void {
-    // Connect to `e.target` or add it to a list of available ports.
-    console.log('Event: connect');
-    console.log(e);
-    // document.querySelector('.connection-state').classList.add('connected');
-  }
-
-  disconnectHandler(e: Event): void {
-    // Remove `e.target` from the list of available ports.
-
-    console.log('Event: disconnect');
-    console.log(e);
-    // document.querySelector('.connection-state').classList.remove('connected');
   }
 }
