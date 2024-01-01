@@ -29,11 +29,11 @@ export default class FrameBuffer {
     this.controller = controller;
   }
 
-  compareBytes(actualValue: number, expectedValue: number): void {
+  checkServiceByte(actualValue: number, expectedValue: number): void {
     if (actualValue === expectedValue) {
       this.receivedByteIndex += 1;
     } else {
-      this.receivedByteIndex = 0;
+      this.resetFrame();
     }
   }
 
@@ -42,31 +42,36 @@ export default class FrameBuffer {
       case SERVICE_BYTES_MAP.byte0.index:
       case SERVICE_BYTES_MAP.byte1.index:
       case SERVICE_BYTES_MAP.byte2.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte2.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte2.expectedValue);
         break;
       case SERVICE_BYTES_MAP.byte4.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte4.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte4.expectedValue);
         break;
       case SERVICE_BYTES_MAP.byte7.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte7.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte7.expectedValue);
         break;
       case SERVICE_BYTES_MAP.byte10.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte10.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte10.expectedValue);
         break;
       case SERVICE_BYTES_MAP.byte13.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte13.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte13.expectedValue);
         break;
       case SERVICE_BYTES_MAP.byte16.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte16.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte16.expectedValue);
         break;
       case SERVICE_BYTES_MAP.byte19.index:
-        this.compareBytes(value, SERVICE_BYTES_MAP.byte19.expectedValue);
+        this.checkServiceByte(value, SERVICE_BYTES_MAP.byte19.expectedValue);
         break;
 
       default:
         this.addToFrame(value);
         break;
     }
+  }
+
+  resetFrame(): void {
+    this.emptyPosition = 0;
+    this.receivedByteIndex = 0;
   }
 
   addToFrame(value: number): void {
@@ -78,8 +83,7 @@ export default class FrameBuffer {
     const isCompleteFrame = this.emptyPosition === this.frame.length;
     if (isCompleteFrame) {
       this.controller.enqueue(this.frame);
-      this.emptyPosition = 0;
-      this.receivedByteIndex = 0;
+      this.resetFrame();
     }
   }
 }

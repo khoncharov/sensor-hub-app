@@ -26,8 +26,6 @@ const controller = {
   },
 };
 
-const frameBuffer = new FrameBuffer(controller);
-
 const baudRate = 115200;
 const usbVendorId = 0x1a86;
 const usbProductId = 0x7523;
@@ -39,6 +37,8 @@ export class SerialPortService {
   private readonly store = inject(Store);
 
   private serial = navigator.serial;
+
+  private frameBuffer = new FrameBuffer(controller);
 
   constructor() {
     this.serial.addEventListener('connect', (e: Event) => {
@@ -93,7 +93,7 @@ export class SerialPortService {
             break;
           }
           value.forEach((byte: number) => {
-            frameBuffer.push(byte);
+            this.frameBuffer.push(byte);
           });
         }
       } catch (error) {
