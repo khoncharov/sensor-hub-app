@@ -7,14 +7,26 @@ export interface FrameJSONObject {
   sensor4: number;
 }
 
+// export interface FrameJSONSimplifiedObject {
+//   s: number;
+//   t: number;
+//   a: number;
+//   b: number;
+//   c: number;
+//   d: number;
+//   data: FrameJSONSimplifiedObject[];
+// }
+
 export const frameToJSON = (frame: Uint8Array): FrameJSONObject => {
   const dv = new DataView(frame.buffer);
+
   const source = dv.getInt8(0);
   const timeStamp = dv.getInt32(1);
   const sensor1 = dv.getInt16(5);
   const sensor2 = dv.getInt16(7);
   const sensor3 = dv.getInt16(9);
   const sensor4 = dv.getInt16(11);
+
   return {
     source,
     timeStamp,

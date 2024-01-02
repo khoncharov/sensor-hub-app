@@ -1,10 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
+import { AppState } from './app-state.types';
 import { SerialPortState } from '../reducers/serial-port.reducers';
-
-export interface AppState {
-  serialPort: SerialPortState;
-}
 
 export const selectSerialPort = (state: AppState) => state.serialPort;
 

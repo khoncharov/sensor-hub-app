@@ -6,8 +6,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { serialPortReducer } from './store/reducers/serial-port.reducers';
+import { sensorsDataReducer } from './store/reducers/sensors-data.reducer';
 
-const reducers = { serialPort: serialPortReducer };
+const reducers = { serialPort: serialPortReducer, sensors: sensorsDataReducer };
 
 const devtoolsOptions = {
   maxAge: 25,

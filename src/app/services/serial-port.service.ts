@@ -2,29 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import FrameBuffer from '../utils/frame-buffer';
+import { SensorDataService } from './sensors-data.service';
 import * as serialPortActions from '../store/actions/serial-port.actions';
-
-const controller = {
-  enqueue: (data: Uint8Array) => {
-    console.log(data);
-    const dv = new DataView(data.buffer);
-
-    const addr = dv.getInt8(0);
-    const time = dv.getInt32(1);
-    const sensor1 = dv.getInt16(5);
-    const sensor2 = dv.getInt16(7);
-    const sensor3 = dv.getInt16(9);
-    const sensor4 = dv.getInt16(11);
-    console.log(
-      addr,
-      (time / 1000).toFixed(2),
-      sensor1,
-      sensor2,
-      sensor3,
-      sensor4
-    );
-  },
-};
 
 const baudRate = 115200;
 const usbVendorId = 0x1a86;
@@ -38,9 +17,12 @@ export class SerialPortService {
 
   private serial = navigator.serial;
 
-  private frameBuffer = new FrameBuffer(controller);
+  private frameBuffer!: FrameBuffer;
 
   constructor() {
+    const dataController = inject(SensorDataService);
+    this.frameBuffer = new FrameBuffer(dataController);
+
     this.serial.addEventListener('connect', (e: Event) => {
       const port = e.target as SerialPort;
       this.store.dispatch(serialPortActions.add({ port }));

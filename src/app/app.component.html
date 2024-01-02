@@ -27,39 +27,54 @@
   <ul>
     <li>
       <label>
-        <input type="checkbox" />
-        sensor 1:
-        <span>2900</span>
+        timeStamp:
+        <span *ngIf="lastFrame$ | async as f">{{ f.timeStamp }}</span>
       </label>
     </li>
     <li>
       <label>
-        <input type="checkbox" />
-        sensor 2:
-        <span>2900</span>
+        sens1:
+        <span *ngIf="lastFrame$ | async as f">{{ f.sensor1 }}</span>
       </label>
     </li>
     <li>
       <label>
-        <input type="checkbox" />
-        sensor 3:
-        <span>2900</span>
+        sens2:
+        <span *ngIf="lastFrame$ | async as f">{{ f.sensor2 }}</span>
       </label>
     </li>
     <li>
       <label>
-        <input type="checkbox" />
-        sensor 4:
-        <span>2900</span>
+        sens3:
+        <span *ngIf="lastFrame$ | async as f">{{ f.sensor3 }}</span>
+      </label>
+    </li>
+    <li>
+      <label>
+        sens4:
+        <span *ngIf="lastFrame$ | async as f">{{ f.sensor4 }}</span>
       </label>
     </li>
   </ul>
-  <button type="button"><span>🟢</span>RECORD</button>
-  <button type="button"><span>🟥</span>STOP</button>
+  <button *ngIf="!(isRecording$ | async)" type="button">
+    <span>🟢</span>
+    RECORD
+  </button>
+  <button *ngIf="isRecording$ | async" type="button">
+    <span>🟥</span>
+    STOP
+  </button>
   <button type="button" (click)="saveDataToFile()">SAVE</button>
-  Recording: 10 s - 234 points
 </fieldset>
 
+<!-- <fieldset class="data_container">
+  <legend>Recording</legend>
+  <span>Time: 10 s</span>
+  <br />
+  <span>Points: 234</span>
+</fieldset> -->
+
+<!--
 <fieldset class="chart_container">
   <legend>Chart</legend>
-</fieldset>
+</fieldset> -->
