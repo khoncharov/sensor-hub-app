@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { FrameJSONObject } from '../../utils/frame-converter';
 import * as sensorsDataActions from '../actions/sensors-data.actions';
-import { FrameJSONObject, frameToJSON } from '../../utils/frame-converter';
 
 export interface SensorsDataState {
   latestFrame: FrameJSONObject | null;
@@ -16,13 +16,10 @@ export const initialState: SensorsDataState = {
 export const sensorsDataReducer = createReducer(
   initialState,
 
-  on(sensorsDataActions.update, (state, { frame }) => {
-    const latestFrame = frameToJSON(frame);
-    return {
-      ...state,
-      latestFrame,
-    };
-  }),
+  on(sensorsDataActions.update, (state, { latestFrame }) => ({
+    ...state,
+    latestFrame,
+  })),
 
   on(sensorsDataActions.startRecording, (state) => ({
     ...state,

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import { frameToJSON } from '../utils/frame-converter';
 import * as sensorDataActions from '../store/actions/sensors-data.actions';
 
 @Injectable({
@@ -12,8 +13,8 @@ export class SensorDataService {
   // protected data!: Uint8Array[];
 
   enqueue(frame: Uint8Array) {
-    console.log(frame);
+    const latestFrame = frameToJSON(frame);
 
-    // this.store.dispatch(sensorDataActions.update({ frame }));
+    this.store.dispatch(sensorDataActions.update({ latestFrame }));
   }
 }
