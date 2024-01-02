@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { FrameJSONObject } from '../../utils/frame-converter';
+import { FrameJSONObject } from '../../models/frame.model';
 import * as sensorsDataActions from '../actions/sensors-data.actions';
 
 export interface SensorsDataState {

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { FrameJSONObject } from '../../utils/frame-converter';
+import { FrameJSONObject } from '../../models/frame.model';
 
 export const startRecording = createAction('[Sensors data] Start recording');
 

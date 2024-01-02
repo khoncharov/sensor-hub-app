@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { FileSystemAccessApiService } from './services/file-system-access-api.service';
 import { SerialPortService } from './services/serial-port.service';
-import { FrameJSONObject } from './utils/frame-converter';
+import { FrameJSONObject } from './models/frame.model';
 import * as fromSerialPort from './store/selectors/serial-port.selectors';
 import * as fromSensors from './store/selectors/sensors-data.selectors';
 
