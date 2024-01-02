@@ -13,7 +13,7 @@ body {
 
 fieldset {
   margin-bottom: 8px;
-  background-color: #8a9bdcca;
+  background-color: #717dad;
   border: none;
   border-radius: 10px;
 }
@@ -22,10 +22,6 @@ legend {
   font-weight: bold;
   color: #e2e2e2;
   background-color: #3f4251;
-}
-
-.data_container ul {
-  list-style-type: none;
 }
 
 button {

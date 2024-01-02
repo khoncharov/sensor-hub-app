@@ -7,3 +7,9 @@
   color: #faf7e5;
   text-shadow: 1px 1px 2px black;
 }
+
+.data_container li {
+  font-family: monospace;
+  font-weight: 500;
+  font-size: x-large;
+}
