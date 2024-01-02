@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 
 import { FileSystemAccessApiService } from './services/file-system-access-api.service';
 import { SerialPortService } from './services/serial-port.service';
+import { SensorDataService } from './services/sensors-data.service';
 import { FrameJSONObject } from './models/frame.model';
+import * as sensorDataActions from './store/actions/sensors-data.actions';
 import * as fromSerialPort from './store/selectors/serial-port.selectors';
 import * as fromSensors from './store/selectors/sensors-data.selectors';
 
@@ -19,6 +21,8 @@ export class AppComponent implements OnInit {
   private sp = inject(SerialPortService);
 
   private readonly store = inject(Store);
+
+  private readonly sensorsData = inject(SensorDataService);
 
   protected port$!: Observable<SerialPort | null>;
 
@@ -50,5 +54,14 @@ export class AppComponent implements OnInit {
 
   connectPort(port: SerialPort): void {
     this.sp.openPort(port);
+  }
+
+  startRecording(): void {
+    this.sensorsData.clearData();
+    this.store.dispatch(sensorDataActions.startRecording());
+  }
+
+  stopRecording(): void {
+    this.store.dispatch(sensorDataActions.stopRecording());
   }
 }

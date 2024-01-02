@@ -22,7 +22,7 @@
   </ng-container>
 </fieldset>
 
-<fieldset class="data_container">
+<fieldset class="data_container" [disabled]="!(portIsConnected$ | async)">
   <legend>Data</legend>
   <ul>
     <li>
@@ -56,15 +56,25 @@
       </label>
     </li>
   </ul>
-  <button *ngIf="!(isRecording$ | async)" type="button">
+  <button
+    *ngIf="!(isRecording$ | async)"
+    type="button"
+    (click)="startRecording()"
+  >
     <span>🟢</span>
     RECORD
   </button>
-  <button *ngIf="isRecording$ | async" type="button">
+  <button *ngIf="isRecording$ | async" type="button" (click)="stopRecording()">
     <span>🟥</span>
     STOP
   </button>
-  <button type="button" (click)="saveDataToFile()">SAVE</button>
+  <button
+    *ngIf="!(isRecording$ | async)"
+    type="button"
+    (click)="saveDataToFile()"
+  >
+    SAVE
+  </button>
 </fieldset>
 
 <!-- <fieldset class="data_container">

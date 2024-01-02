@@ -1,25 +1,28 @@
-import { Injectable } from '@angular/core';
-
-const options: OpenFilePickerOptions = {
-  types: [
-    {
-      description: 'Text',
-      accept: {
-        'text/plain': ['.txt'],
-      },
-    },
-  ],
-  excludeAcceptAllOption: true,
-  multiple: false,
-};
+import { Injectable, inject } from '@angular/core';
+import { SensorDataService } from './sensors-data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileSystemAccessApiService {
+  private readonly sensors = inject(SensorDataService);
+
   async getOpenedFile() {
     if ('showOpenFilePicker' in window) {
       let fileHandle;
+
+      const options: OpenFilePickerOptions = {
+        types: [
+          {
+            description: 'Text',
+            accept: {
+              'text/plain': ['.txt'],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+        multiple: false,
+      };
 
       try {
         [fileHandle] = await window.showOpenFilePicker(options);
@@ -42,13 +45,29 @@ export class FileSystemAccessApiService {
 
   async saveDataToFile() {
     if ('showSaveFilePicker' in window) {
+      const options: SaveFilePickerOptions = {
+        types: [
+          {
+            description: 'Text',
+            accept: {
+              'text/plain': ['.txt'],
+            },
+          },
+        ],
+        suggestedName: `data_sample_${new Date().toISOString().split('.')[0]}`,
+        excludeAcceptAllOption: true,
+      };
+
       try {
         const newHandle = await window.showSaveFilePicker(options);
 
         const writableStream = await newHandle.createWritable();
 
-        const dateTime = new Date().toISOString();
-        await writableStream.write(dateTime);
+        const dataToSave = {
+          date: new Date().toISOString(),
+          sensorsData: this.sensors.getData(),
+        };
+        await writableStream.write(JSON.stringify(dataToSave));
 
         await writableStream.close();
       } catch (error) {
