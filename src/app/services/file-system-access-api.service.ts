@@ -33,24 +33,24 @@ export class FileSystemAccessApiService {
         fr.readAsText(fileData);
 
         fr.addEventListener('loadend', () => {
-          console.log('FILE CONTENT: \n', fr.result);
+          console.error('FILE CONTENT: \n', fr.result);
         });
       } catch (error) {
-        console.log('Open operation was canceled.');
+        console.error('Open operation was canceled.');
       }
     } else {
       console.error('Your browser doesn\'t support "File system access API"');
     }
   }
 
-  async saveDataToFile() {
+  async saveDataToFile(refPressureStr: string) {
     if ('showSaveFilePicker' in window) {
       const options: SaveFilePickerOptions = {
         types: [
           {
             description: 'Text',
             accept: {
-              'text/plain': ['.txt'],
+              'text/plain': ['.json', '.txt'],
             },
           },
         ],
@@ -65,13 +65,17 @@ export class FileSystemAccessApiService {
 
         const dataToSave = {
           date: new Date().toISOString(),
+          refPressure: Number(refPressureStr),
           sensorsData: this.sensors.getData(),
         };
+
+        console.dir(dataToSave);
+
         await writableStream.write(JSON.stringify(dataToSave));
 
         await writableStream.close();
       } catch (error) {
-        console.log('Open operation was canceled.');
+        console.error('Save operation was canceled.');
       }
     } else {
       console.error('Your browser doesn\'t support "File system access API"');

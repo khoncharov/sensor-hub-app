@@ -1,9 +1,9 @@
-import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
-import { frameToJSON } from '../utils/frame-converter';
-import { FrameJSONSimplifiedObject } from '../models/frame.model';
+import { frameToTuple } from '../utils/frame-converter';
+import { FrameTuple } from '../models/frame.model';
 import * as sensorDataActions from '../store/actions/sensors-data.actions';
 import * as fromSensors from '../store/selectors/sensors-data.selectors';
 
@@ -13,7 +13,7 @@ import * as fromSensors from '../store/selectors/sensors-data.selectors';
 export class SensorDataService implements OnDestroy {
   private readonly store = inject(Store);
 
-  private data: FrameJSONSimplifiedObject[] = [];
+  private data: FrameTuple[] = [];
 
   private isRecording$!: Observable<boolean>;
 
@@ -33,17 +33,10 @@ export class SensorDataService implements OnDestroy {
   }
 
   enqueue(frame: Uint8Array): void {
-    const latestFrame = frameToJSON(frame);
+    const latestFrame = frameToTuple(frame);
 
     if (this.isRec) {
-      this.data.push({
-        s: latestFrame.source,
-        t: latestFrame.timeStamp,
-        a: latestFrame.sensor1,
-        b: latestFrame.sensor2,
-        c: latestFrame.sensor3,
-        d: latestFrame.sensor4,
-      });
+      this.data.push(latestFrame);
     }
 
     this.store.dispatch(sensorDataActions.update({ latestFrame }));
@@ -53,7 +46,7 @@ export class SensorDataService implements OnDestroy {
     this.data.length = 0;
   }
 
-  getData(): FrameJSONSimplifiedObject[] {
+  getData(): FrameTuple[] {
     return this.data;
   }
 }

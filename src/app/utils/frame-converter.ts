@@ -1,6 +1,6 @@
-import { FrameJSONObject } from '../models/frame.model';
+import { FrameTuple } from '../models/frame.model';
 
-export const frameToJSON = (frame: Uint8Array): FrameJSONObject => {
+export const frameToTuple = (frame: Uint8Array): FrameTuple => {
   const dv = new DataView(frame.buffer);
 
   const source = dv.getInt8(0);
@@ -10,12 +10,5 @@ export const frameToJSON = (frame: Uint8Array): FrameJSONObject => {
   const sensor3 = dv.getInt16(9);
   const sensor4 = dv.getInt16(11);
 
-  return {
-    source,
-    timeStamp,
-    sensor1,
-    sensor2,
-    sensor3,
-    sensor4,
-  };
+  return [source, timeStamp, sensor1, sensor2, sensor3, sensor4];
 };

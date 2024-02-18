@@ -71,7 +71,7 @@ export class SerialPortService {
         while (true) {
           const { value, done } = await reader.read();
           if (done) {
-            console.log('The stream is done.');
+            console.info('The stream is done.');
             break;
           }
           value.forEach((byte: number) => {

@@ -54,3 +54,21 @@ button:disabled {
   color: rgb(153, 153, 153);
   background-color: #dde3ffca;
 }
+
+input {
+  margin: 4px;
+  padding-inline: 10px;
+  height: 32px;
+  min-width: 96px;
+  border: none;
+  border-radius: 6px;
+  font: inherit;
+  color: rgb(18, 18, 22);
+  box-shadow: 0px 0px 4px -1px rgba(0, 0, 0, 0.4);
+  transition: 0.2s;
+  outline-color: dodgerblue;
+}
+
+input::placeholder {
+  color: #ccc;
+}

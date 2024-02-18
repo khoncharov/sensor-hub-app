@@ -28,31 +28,53 @@
     <li>
       <label>
         timeStamp:
-        <span *ngIf="lastFrame$ | async as f">{{ f.timeStamp }}</span>
+        <span *ngIf="lastFrame$ | async as f">
+          {{ f[1] }}
+        </span>
       </label>
     </li>
     <li>
       <label>
         sens1:
-        <span *ngIf="lastFrame$ | async as f">{{ f.sensor1 }}</span>
+        <!-- <span *ngIf="lastFrame$ | async as f">{{ f[2] }}</span> -->
+        <span *ngIf="lastFrame$ | async as f">
+          {{
+            converterFunc({
+              value: f[2],
+              k: 0.075,
+              b: -198.907,
+              units: "kPa"
+            })
+          }}
+        </span>
       </label>
     </li>
     <li>
       <label>
         sens2:
-        <span *ngIf="lastFrame$ | async as f">{{ f.sensor2 }}</span>
+        <!-- <span *ngIf="lastFrame$ | async as f">{{ f[3] }}</span> -->
+        <span *ngIf="lastFrame$ | async as f">
+          {{
+            converterFunc({
+              value: f[3],
+              k: 0.075,
+              b: -198.907,
+              units: "kPa"
+            })
+          }}
+        </span>
       </label>
     </li>
     <li>
       <label>
         sens3:
-        <span *ngIf="lastFrame$ | async as f">{{ f.sensor3 }}</span>
+        <span *ngIf="lastFrame$ | async as f">{{ f[4] }}</span>
       </label>
     </li>
     <li>
       <label>
         sens4:
-        <span *ngIf="lastFrame$ | async as f">{{ f.sensor4 }}</span>
+        <span *ngIf="lastFrame$ | async as f">{{ f[5] }}</span>
       </label>
     </li>
   </ul>
@@ -75,6 +97,14 @@
   >
     SAVE
   </button>
+  <input
+    *ngIf="!(isRecording$ | async)"
+    [(ngModel)]="refPressureStr"
+    type="text"
+    placeholder="Reference pressure"
+    required
+    pattern="[0-9.]*"
+  />
 </fieldset>
 
 <!-- <fieldset class="data_container">
