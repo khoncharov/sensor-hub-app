@@ -78,6 +78,6 @@ export class AppComponent implements OnInit {
 
   converterFunc(funcParams: ConversionFuncParams): string {
     const { value, k, b, units } = funcParams;
-    return `${(k * value + b).toFixed(2)} ${units}`;
+    return `${(k * value + b).toFixed(1)} ${units}`;
   }
 }

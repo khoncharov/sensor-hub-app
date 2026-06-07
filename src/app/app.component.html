@@ -42,8 +42,8 @@
             converterFunc({
               value: f[2],
               k: 0.075,
-              b: -198.907,
-              units: "kPa"
+              b: -199,
+              units: "kPa",
             })
           }}
         </span>
@@ -58,8 +58,8 @@
             converterFunc({
               value: f[3],
               k: 0.075,
-              b: -198.907,
-              units: "kPa"
+              b: -199,
+              units: "kPa",
             })
           }}
         </span>
@@ -68,13 +68,13 @@
     <li>
       <label>
         sens3:
-        <span *ngIf="lastFrame$ | async as f">{{ f[4] }}</span>
+        <!-- <span *ngIf="lastFrame$ | async as f">{{ f[4] }}</span> -->
       </label>
     </li>
     <li>
       <label>
         sens4:
-        <span *ngIf="lastFrame$ | async as f">{{ f[5] }}</span>
+        <!-- <span *ngIf="lastFrame$ | async as f">{{ f[5] }}</span> -->
       </label>
     </li>
   </ul>

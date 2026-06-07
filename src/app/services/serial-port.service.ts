@@ -40,7 +40,8 @@ export class SerialPortService {
 
   requestPort(): void {
     this.serial
-      .requestPort({ filters: [{ usbVendorId, usbProductId }] })
+      // .requestPort({ filters: [{ usbVendorId, usbProductId }] })
+      .requestPort()
       .then((port) => {
         this.store.dispatch(serialPortActions.add({ port }));
       })
