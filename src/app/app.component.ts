@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, map, filter } from 'rxjs';
 
 import { FileSystemAccessApiService } from './services/file-system-access-api.service';
 import { SerialPortService } from './services/serial-port.service';
@@ -41,12 +41,42 @@ export class AppComponent implements OnInit {
 
   protected refPressureStr = '';
 
+  public sens1Avg$!: Observable<string | null>;
+
+  public sens2Avg$!: Observable<string | null>;
+
   ngOnInit() {
     this.port$ = this.store.select(fromSerialPort.selectPort);
     this.portIsConnected$ = this.store.select(fromSerialPort.selectPortState);
 
     this.lastFrame$ = this.store.select(fromSensors.selectLatestFrame);
     this.isRecording$ = this.store.select(fromSensors.selectRecordingState);
+
+    this.sens1Avg$ = this.lastFrame$?.pipe(
+      map((f) => {
+        if (!f) return null;
+
+        return this.converterFunc({
+          value: f[2],
+          k: 0.075,
+          b: -199,
+          units: "kPa",
+        })
+      })
+    );
+
+    this.sens2Avg$ = this.lastFrame$?.pipe(
+      map((f) => {
+        if (!f) return null;
+
+        return this.converterFunc({
+          value: f[3],
+          k: 0.075,
+          b: -199,
+          units: "kPa",
+        })
+      })
+    );
   }
 
   getOpenedFile(): void {

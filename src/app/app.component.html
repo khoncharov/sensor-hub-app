@@ -29,7 +29,7 @@
       <label>
         timeStamp:
         <span *ngIf="lastFrame$ | async as f">
-          {{ f[1] }}
+          {{ f[1] | number: '2.1-1' }}
         </span>
       </label>
     </li>
@@ -37,15 +37,10 @@
       <label>
         sens1:
         <!-- <span *ngIf="lastFrame$ | async as f">{{ f[2] }}</span> -->
-        <span *ngIf="lastFrame$ | async as f">
-          {{
-            converterFunc({
-              value: f[2],
-              k: 0.075,
-              b: -199,
-              units: "kPa",
-            })
-          }}
+        <span
+          style="display: inline-block; width: 120px; text-align: right;"
+          *ngIf="sens1Avg$ | async as sens1Value">
+          {{ sens1Value }}
         </span>
       </label>
     </li>
@@ -53,15 +48,10 @@
       <label>
         sens2:
         <!-- <span *ngIf="lastFrame$ | async as f">{{ f[3] }}</span> -->
-        <span *ngIf="lastFrame$ | async as f">
-          {{
-            converterFunc({
-              value: f[3],
-              k: 0.075,
-              b: -199,
-              units: "kPa",
-            })
-          }}
+        <span
+          style="display: inline-block; width: 120px; text-align: right;"
+          *ngIf="sens2Avg$ | async as sens2Value">
+          {{ sens2Value }}
         </span>
       </label>
     </li>
