@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, map, filter } from 'rxjs';
+import { Observable, map, bufferCount } from 'rxjs';
 
 import { FileSystemAccessApiService } from './services/file-system-access-api.service';
 import { SerialPortService } from './services/serial-port.service';
@@ -54,10 +54,17 @@ export class AppComponent implements OnInit {
 
     this.sens1Avg$ = this.lastFrame$?.pipe(
       map((f) => {
-        if (!f) return null;
-
+        if (!f) return 0;
+        return f[2];
+      }),
+      bufferCount(8, 1),
+      map((buffer) => {
+        const sum = buffer.reduce((acc, val) => acc + val, 0);
+        return sum / buffer.length;
+      }),
+      map((value) => {
         return this.converterFunc({
-          value: f[2],
+          value,
           k: 0.075,
           b: -199,
           units: "kPa",
@@ -67,10 +74,17 @@ export class AppComponent implements OnInit {
 
     this.sens2Avg$ = this.lastFrame$?.pipe(
       map((f) => {
-        if (!f) return null;
-
+        if (!f) return 0;
+        return f[3];
+      }),
+      bufferCount(8, 1),
+      map((buffer) => {
+        const sum = buffer.reduce((acc, val) => acc + val, 0);
+        return sum / buffer.length;
+      }),
+      map((value) => {
         return this.converterFunc({
-          value: f[3],
+          value,
           k: 0.075,
           b: -199,
           units: "kPa",
