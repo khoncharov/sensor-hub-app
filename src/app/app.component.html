@@ -27,9 +27,9 @@
   <ul>
     <li>
       <label>
-        timeStamp:
+        time:
         <span *ngIf="lastFrame$ | async as f">
-          {{ f[1] | number: '2.1-1' }}
+          {{ f[1] | number: '1.1-1' }}
         </span>
       </label>
     </li>
@@ -87,24 +87,12 @@
   >
     SAVE
   </button>
-  <input
+  <!-- <input
     *ngIf="!(isRecording$ | async)"
     [(ngModel)]="refPressureStr"
     type="text"
     placeholder="Reference pressure"
     required
     pattern="[0-9.]*"
-  />
+  /> -->
 </fieldset>
-
-<!-- <fieldset class="data_container">
-  <legend>Recording</legend>
-  <span>Time: 10 s</span>
-  <br />
-  <span>Points: 234</span>
-</fieldset> -->
-
-<!--
-<fieldset class="chart_container">
-  <legend>Chart</legend>
-</fieldset> -->
